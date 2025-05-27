@@ -1,4 +1,3 @@
-# app.py
 import os
 from flask import Flask, render_template, request, jsonify
 import datetime
@@ -48,18 +47,85 @@ def generate_invoice():
         """
 
     invoice_html = f"""
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet">
+        <style>
+            body {{
+                font-family: 'Roboto', 'Open Sans', sans-serif;
+                font-size: 14px;
+                color: #333;
+            }}
+            .invoice-box {{
+                max-width: 900px;
+                margin: auto;
+                padding: 30px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            }}
+            .invoice-header {{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }}
+            .company-details h1 {{
+                font-size: 24px;
+                margin: 0;
+            }}
+            .invoice-meta p {{
+                margin: 4px 0;
+            }}
+            table {{
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }}
+            th {{
+                background: #f4f4f4;
+                font-weight: 700;
+                padding: 10px;
+                text-align: left;
+            }}
+            td {{
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }}
+            tfoot td {{
+                font-weight: 700;
+                background: #f9f9f9;
+            }}
+            .thankyou {{
+                margin-top: 30px;
+                font-size: 16px;
+                font-style: italic;
+                text-align: center;
+                color: #444;
+            }}
+            .print-btn {{
+                text-align: center;
+                margin-top: 20px;
+            }}
+            button {{
+                background-color: #007BFF;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+            }}
+        </style>
+
         <div class="invoice-box">
             <div class="invoice-header">
                 <div class="logo-col">
-                    <img id="previewLogo" src="/static/logo.png" alt="Logo" class="logo" />
+                    <img id="previewLogo" src="/static/logo.png" alt="Logo" style="max-height: 80px;" />
                 </div>
                 <div class="company-details">
                     <h1>Shivshakti Transport</h1>
                     <p>Moshi, Pune<br/>Proprietor: Bharat Bhange</p>
                 </div>
                 <div class="invoice-meta">
-                    <p><strong>Invoice No:</strong> <span id="invoiceNumber">{invoice_number}</span></p>
-                    <p><strong>Date:</strong> <span id="invoiceDate">{invoice_date}</span></p>
+                    <p><strong>Invoice No:</strong> {invoice_number}</p>
+                    <p><strong>Date:</strong> {invoice_date}</p>
                 </div>
             </div>
 
@@ -67,8 +133,8 @@ def generate_invoice():
 
             <div>
                 <strong>Invoice To:</strong><br/>
-                <span id="outClientName">{client_name}</span><br/>
-                <span id="outClientAddress">{client_address}</span>
+                <span>{client_name}</span><br/>
+                <span>{client_address}</span>
             </div>
 
             <div class="trip-details">
@@ -83,26 +149,27 @@ def generate_invoice():
                             <th>Total (₹)</th>
                         </tr>
                     </thead>
-                    <tbody id="tripTableBody">
+                    <tbody>
                         {trip_rows_html}
                     </tbody>
                     <tfoot>
                         <tr>
                             <td colspan="5" style="text-align: right;"><strong>Grand Total (₹)</strong></td>
-                            <td id="grandTotal">₹{grand_total:.2f}</td>
+                            <td>₹{grand_total:.2f}</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
 
             <p class="thankyou">Thank you !!!</p>
-        </div>
 
-        <div class="print-btn">
-            <button onclick="window.print()">Print / Save as PDF</button>
+            <div class="print-btn">
+                <button onclick="window.print()">Print / Save as PDF</button>
+            </div>
         </div>
     """
+
     return jsonify({'invoiceHtml': invoice_html})
 
 if __name__ == '__main__':
-    shivshakti_invoice_app.run(debug=True)
+    shivshakti_invoice_app.run(debug=False, host="0.0.0.0", port=5000)

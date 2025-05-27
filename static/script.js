@@ -17,6 +17,7 @@ function addTripRow() {
 }
 
 async function generateInvoice() {
+  console.log("Generate Invoice button clicked. Starting invoice generation process.");
   const clientName = document.getElementById("clientName").value;
   const clientAddress = document.getElementById("clientAddress").value;
 
@@ -59,6 +60,7 @@ async function generateInvoice() {
     const data = await response.json();
     document.getElementById("invoicePreview").innerHTML = data.invoiceHtml;
     document.getElementById("invoicePreview").classList.remove("hidden");
+    console.log("Invoice preview should now be visible.");
 
   } catch (error) {
     console.error('Error generating invoice:', error);
