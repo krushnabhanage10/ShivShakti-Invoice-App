@@ -1,31 +1,20 @@
+# app.py
 import os
 from flask import Flask, render_template, request, jsonify
 import datetime
 
-# Changed the instance name from 'app' to 'shivshakti_invoice_app'
-# This is an internal variable name, not directly visible to the user.
 shivshakti_invoice_app = Flask(__name__)
 
-# This will be the directory where your logo.png and style.css are stored.
-# The path will be 'static/logo.png' and 'static/style.css'
 STATIC_FOLDER = 'static'
-# Ensure the static folder exists
 if not os.path.exists(STATIC_FOLDER):
     os.makedirs(STATIC_FOLDER)
 
-@shivshakti_invoice_app.route('/') # Use the new instance name
+@shivshakti_invoice_app.route('/')
 def index():
-    """
-    Renders the main HTML page for the invoice generator.
-    """
     return render_template('index.html')
 
-@shivshakti_invoice_app.route('/generate_invoice', methods=['POST']) # Use the new instance name
+@shivshakti_invoice_app.route('/generate_invoice', methods=['POST'])
 def generate_invoice():
-    """
-    Receives invoice data from the frontend, processes it, and returns
-    the generated invoice HTML.
-    """
     data = request.json
     client_name = data.get('clientName', '')
     client_address = data.get('clientAddress', '')
@@ -58,7 +47,6 @@ def generate_invoice():
             </tr>
         """
 
-    # Construct the full invoice HTML
     invoice_html = f"""
         <div class="invoice-box">
             <div class="invoice-header">
@@ -117,4 +105,4 @@ def generate_invoice():
     return jsonify({'invoiceHtml': invoice_html})
 
 if __name__ == '__main__':
-    shivshakti_invoice_app.run(debug=True) # Use the new instance name here too
+    shivshakti_invoice_app.run(debug=True)
