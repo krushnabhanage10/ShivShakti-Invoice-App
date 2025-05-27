@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        docker build -t krushnabhanage10/shivshaktinvoice:latest .
+        docker login -u ${{ secrets.DOCKERHUBUSER }} -p ${{ secrets.DOCKERHUBPASSWD }}
+        docker push krushnabhanage10/shivshaktinvoice:latest
