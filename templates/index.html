@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShivShakti Invoice App</title> <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="/static/logo.png" alt="Shivshakti Logo" class="logo" />
+      <h1>Shivshakti Transport</h1>
+      <p>Moshi, Pune<br/>Proprietor: Bharat Bhange</p>
+    </header>
+
+    <section class="form">
+      <label>Client Name</label>
+      <input type="text" id="clientName" placeholder="e.g. Rajendra Jagtap" />
+
+      <label>Client Address</label>
+      <textarea id="clientAddress" placeholder="e.g. Hinjewadi, Pune"></textarea>
+
+      <h3>Trip Details</h3>
+      <div id="tripRows"></div>
+
+      <button onclick="addTripRow()">+ Add Trip</button>
+      <br /><br />
+      <button onclick="generateInvoice()">Generate Invoice</button>
+    </section>
+
+    <section id="invoicePreview" class="invoice hidden">
+      </section>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

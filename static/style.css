@@ -1,0 +1,166 @@
+/* static/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+  color: #333;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+}
+
+header {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #0077cc;
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+h1, h2, h3, .company-details h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #222;
+}
+
+.form {
+  margin-top: 30px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  background: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.invoice {
+  margin-top: 40px;
+  padding: 20px;
+  background: #fefefe;
+  border: 1px solid #ccc;
+  page-break-inside: avoid;
+  font-size: 15px;
+}
+
+.invoice-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-col {
+  flex: 0 0 100px;
+}
+
+.company-details {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.invoice-meta {
+  text-align: right;
+  font-size: 14px;
+  color: #555;
+}
+
+.invoice-meta p {
+  margin: 2px 0;
+}
+
+.trip-details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.trip-details th, .trip-details td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.trip-details th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.trip-details tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.trip-details td:last-child, .trip-details th:last-child {
+  text-align: right;
+}
+
+.thankyou {
+  text-align: center;
+  margin-top: 30px;
+  font-style: italic;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  color: #0077cc;
+}
+
+.print-btn {
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+  .form, .print-btn {
+    display: none;
+  }
+  .invoice {
+    border: none;
+    padding: 0;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.trip-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.trip-row input {
+  padding: 8px;
+}

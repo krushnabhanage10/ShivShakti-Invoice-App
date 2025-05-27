@@ -1,0 +1,9 @@
+__pycache__/
+.git/
+.venv/
+venv/
+*.pyc
+*.log
+.DS_Store
+.vscode/
+# Add any other files or directories you want to exclude from the Docker image
