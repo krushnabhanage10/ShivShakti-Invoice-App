@@ -1,166 +1,134 @@
-/* static/style.css */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700&display=swap');
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f9;color:#182230;font:15px 'Open Sans',sans-serif}
+.container{max-width:1120px;margin:auto;padding:24px}
+.app-header{margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:64px;height:64px;object-fit:contain}
+.brand h1,h2,h3{font-family:Poppins,sans-serif;margin:0}
+.brand p,.section-heading p,.section-subheading p{margin:4px 0 0;color:#667085}
 
-body {
-  font-family: 'Open Sans', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f8f9fa;
-  color: #333;
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:0;background:#e2e8f0;border-radius:10px 10px 0 0;padding:6px 6px 0}
+.tab{padding:10px 22px;border:0;border-radius:8px 8px 0 0;background:transparent;color:#475467;font:600 14px 'Open Sans',sans-serif;cursor:pointer;transition:all .15s}
+.tab:hover{background:#d0d9e6}
+.tab.active{background:#fff;color:#0866c6;box-shadow:0 -2px 6px rgb(15 23 42 / 5%)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* Sections */
+.form-section,.document-preview{background:#fff;border:1px solid #e2e8f0;border-radius:0 12px 12px 12px;padding:26px;box-shadow:0 4px 12px rgb(15 23 42 / 4%)}
+.section-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.client-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0 0}
+.field-group label{display:block;font-weight:700;margin-bottom:7px}
+input,textarea,select{width:100%;padding:10px 11px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}
+textarea{resize:vertical}
+.section-subheading{border-top:1px solid #e2e8f0;padding-top:20px;margin-top:20px}
+.section-subheading h3{font-size:16px}
+button{border:0;border-radius:7px;background:#0866c6;color:#fff;font:600 14px 'Open Sans',sans-serif;padding:10px 15px;cursor:pointer;transition:background .15s}
+button:hover{background:#0756a7}
+button:disabled{opacity:.5;cursor:default}
+.secondary-button{background:#eaf2fc;color:#0756a7}
+.secondary-button:hover{background:#d9e9fa}
+.secondary-button.accent{background:#fef3c7;color:#92400e}
+.secondary-button.accent:hover{background:#fde68a}
+.btn-tiny{padding:4px 10px;font-size:12px;border-radius:5px}
+.btn-small{padding:6px 10px;font-size:13px;border-radius:0 7px 7px 0;margin-left:-1px}
+.danger-btn{background:#b42318;color:#fff}
+.danger-btn:hover{background:#912018}
+.danger{color:#b42318;background:transparent}
+.danger:hover{background:#fef3f2}
+
+/* Autocomplete */
+.autocomplete-wrap{display:flex;align-items:stretch}
+.autocomplete-wrap input{border-radius:7px 0 0 7px}
+
+/* Trip rows */
+.trip-table-wrap{margin-top:15px}
+.trip-labels,.trip-row{display:grid;grid-template-columns:1.3fr 1fr 1fr .65fr .9fr 1.1fr 38px;gap:10px;align-items:center}
+.trip-labels{color:#475467;font-size:12px;font-weight:700;padding:0 3px 6px}
+.trip-row{margin-bottom:10px}
+.remove-row{background:transparent;color:#b42318;padding:5px;font-size:24px;line-height:1}
+.remove-row:hover{background:#fef3f2}
+.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;flex-wrap:wrap}
+.form-actions-inline{display:flex;gap:10px;align-items:flex-end}
+
+/* Error / info messages */
+.error-message{background:#fef3f2;border:1px solid #fecdca;color:#b42318;padding:10px 12px;border-radius:7px;margin-bottom:18px}
+.hidden{display:none}
+
+/* Document preview */
+.document-preview{margin-top:24px}
+.preview-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;color:#475467;font-weight:700}
+.invoice-document,.receipt-document{background:#fff;border:1px solid #cbd5e1;padding:28px;max-width:900px;margin:auto}
+.document-header{display:grid;grid-template-columns:70px 1fr auto;gap:14px;align-items:center;border-bottom:2px solid #0b67c2;padding-bottom:15px}
+.document-header img{max-width:62px;max-height:62px}
+.document-header h2{font-size:21px}
+.document-header p{margin:2px 0;color:#667085}
+.document-meta{text-align:right;color:#475467;font-size:13px}
+.document-meta strong{color:#0b67c2;letter-spacing:.06em}
+.bill-to{margin:20px 0;line-height:1.55}
+.bill-to span{white-space:pre-line}
+.document-table{width:100%;border-collapse:collapse}
+.document-table th,.document-table td{padding:10px;border:1px solid #cbd5e1;text-align:left}
+.document-table th{background:#eaf2fc}
+.document-table td:nth-last-child(-n+2),.document-table th:nth-last-child(-n+2),.document-table tfoot td:last-child{text-align:right}
+.document-table tfoot{font-weight:700;background:#f8fafc}
+.thankyou{text-align:center;color:#475467;margin:25px 0 0}.invoice-grand-total{display:flex;justify-content:space-between;padding:12px 10px;font-weight:700;font-size:16px;border-top:2px solid #0b67c2;margin-top:12px}
+.receipt-batch{display:grid;gap:24px}
+.receipt-footer{margin-top:30px;display:flex;justify-content:space-between;color:#475467;font-size:13px}
+
+/* Batch cards */
+.batch-list{display:grid;gap:12px;margin-top:18px}
+.batch-card{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px}
+.batch-info{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:14px}
+.batch-info span{color:#667085}
+.batch-actions-inline{display:flex;gap:8px}
+
+/* Data tables */
+.filter-bar{display:flex;gap:14px;margin:18px 0;flex-wrap:wrap}
+.filter-bar .field-group{flex:0 0 220px}
+.receipt-table-wrap{margin-top:18px;overflow-x:auto}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th,.data-table td{padding:8px 10px;border:1px solid #e2e8f0;text-align:left}
+.data-table th{background:#f1f5f9;font-weight:700;color:#475467;font-size:12px}
+.data-table tbody tr:hover{background:#f8fafc}
+.batch-actions{display:flex;gap:10px;margin-top:16px}
+.empty-state{text-align:center;color:#667085;padding:30px;font-size:15px}
+.edit-receipt-form{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:18px;margin-bottom:18px}
+.edit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-bottom:14px}
+.edit-grid .field-group label{display:block;font-weight:700;margin-bottom:5px;font-size:12px}
+.edit-actions{display:flex;gap:10px}
+
+/* Client form */
+.client-form{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:18px;margin-bottom:18px}
+
+/* Print */
+.print-content{max-width:900px;margin:auto}
+@media(max-width:700px){
+  .container{padding:14px}
+  .form-section,.document-preview{padding:17px}
+  .section-heading,.form-actions{flex-direction:column}
+  .form-actions button,.section-heading button{width:100%}
+  .client-grid{grid-template-columns:1fr}
+  .trip-labels{display:none}
+  .trip-row{grid-template-columns:1fr 1fr 1fr 34px}
+  .trip-row input:first-child{grid-column:span 2}
+  .document-header{grid-template-columns:52px 1fr}
+  .document-meta{grid-column:1/-1;text-align:left}
+  .document-table{font-size:12px}
+  .document-table th,.document-table td{padding:6px}
+  .tabs{flex-wrap:wrap}
 }
-
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-  background: #fff;
-}
-
-header {
-  text-align: center;
-  padding-bottom: 20px;
-  border-bottom: 3px solid #0077cc;
-}
-
-.logo {
-  width: 80px;
-  margin-bottom: 10px;
-}
-
-h1, h2, h3, .company-details h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  color: #222;
-}
-
-.form {
-  margin-top: 30px;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  font-weight: 600;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-button {
-  margin-top: 15px;
-  padding: 10px 16px;
-  background: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.invoice {
-  margin-top: 40px;
-  padding: 20px;
-  background: #fefefe;
-  border: 1px solid #ccc;
-  page-break-inside: avoid;
-  font-size: 15px;
-}
-
-.invoice-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.logo-col {
-  flex: 0 0 100px;
-}
-
-.company-details {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.invoice-meta {
-  text-align: right;
-  font-size: 14px;
-  color: #555;
-}
-
-.invoice-meta p {
-  margin: 2px 0;
-}
-
-.trip-details table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.trip-details th, .trip-details td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-}
-
-.trip-details th {
-  background-color: #f0f0f0;
-  font-weight: 600;
-}
-
-.trip-details tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
-}
-
-.trip-details td:last-child, .trip-details th:last-child {
-  text-align: right;
-}
-
-.thankyou {
-  text-align: center;
-  margin-top: 30px;
-  font-style: italic;
-  font-family: 'Poppins', sans-serif;
-  font-size: 18px;
-  color: #0077cc;
-}
-
-.print-btn {
-  text-align: center;
-  margin-top: 20px;
-}
-
-@media print {
-  body {
-    background: white;
-  }
-  .form, .print-btn {
-    display: none;
-  }
-  .invoice {
-    border: none;
-    padding: 0;
-  }
-}
-
-.hidden {
-  display: none;
-}
-
-.trip-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.trip-row input {
-  padding: 8px;
+@media print{
+  @page{margin:12mm}
+  body{background:#fff}
+  .container{max-width:none;padding:0}
+  .no-print,.app-header,.form-section,.tabs,.tab-panel:not(.active){display:none!important}
+  .tab-panel{display:block!important}
+  .document-preview{border:0;box-shadow:none;padding:0;margin:0}
+  .invoice-document,.receipt-document{border:0;padding:0;max-width:none;box-shadow:none}
+  .receipt-document{break-after:page;page-break-after:always}
+  .receipt-document:last-child{break-after:auto;page-break-after:auto}
+  .batch-card,.data-table,.filter-bar,.batch-actions,.client-form,#clientTable{display:none!important}
 }

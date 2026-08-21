@@ -1,38 +1,212 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>ShivShakti Invoice App</title>
-  <link rel="stylesheet" href="/static/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shivshakti Transport | Receipt Manager</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <img src="/static/logo.png" alt="Shivshakti Logo" class="logo" />
-      <h1>Shivshakti Transport</h1>
-      <p>Moshi, Pune<br/>Proprietor: Bharat Bhange</p>
-    </header>
+<div class="container">
+  <header class="app-header">
+    <div class="brand">
+      <img src="/static/logo.png" alt="Shivshakti Transport logo" class="logo">
+      <div>
+        <h1>Shivshakti Transport</h1>
+        <p>Moshi, Pune · Proprietor: Bharat Bhange · 8446604658</p>
+      </div>
+    </div>
+  </header>
 
-    <section class="form">
-      <label>Client Name</label>
-      <input type="text" id="clientName" placeholder="e.g. Rajendra Jagtap" />
+  <main>
+    <!-- Tab bar -->
+    <nav class="tabs no-print">
+      <button class="tab active" data-tab="create">Create Receipts</button>
+      <button class="tab" data-tab="saved">Saved Receipts</button>
+      <button class="tab" data-tab="clients">Manage Clients</button>
+    </nav>
 
-      <label>Client Address</label>
-      <textarea id="clientAddress" placeholder="e.g. Hinjewadi, Pune"></textarea>
+    <!-- ===== CREATE TAB ===== -->
+    <section class="tab-panel active" id="panel-create">
+      <div class="form-section">
+        <div class="section-heading">
+          <div>
+            <h2>Create Receipts</h2>
+            <p>Select a client to auto-fill details, add trip rows, then generate.</p>
+          </div>
+        </div>
 
-      <h3>Trip Details</h3>
-      <div id="tripRows"></div>
+        <div id="errorContainer" class="error-message hidden" role="alert"></div>
 
-      <button onclick="addTripRow()">+ Add Trip</button>
-      <br /><br />
-      <button onclick="generateInvoice()">Generate Invoice</button>
+        <div class="client-grid">
+          <div class="field-group">
+            <label for="clientSelect">Client (select or type new)</label>
+            <div class="autocomplete-wrap">
+              <input id="clientSelect" list="clientList" placeholder="Start typing client name…" autocomplete="off">
+              <datalist id="clientList"></datalist>
+              <button type="button" class="btn-small" id="saveNewClientBtn" title="Save as new client">💾</button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="clientPhone">Phone</label>
+            <input id="clientPhone" placeholder="Phone number">
+          </div>
+        </div>
+        <div class="client-grid">
+          <div class="field-group">
+            <label for="clientName">Client name</label>
+            <input id="clientName" placeholder="e.g. Rajendra Jagtap">
+          </div>
+          <div class="field-group">
+            <label for="clientAddress">Client address</label>
+            <textarea id="clientAddress" rows="2" placeholder="e.g. Hinjewadi, Pune"></textarea>
+          </div>
+        </div>
+        <div class="client-grid">
+          <div class="field-group">
+            <label for="invoiceDate">Invoice date</label>
+            <input type="date" id="invoiceDate">
+          </div>
+          <div></div>
+        </div>
+
+        <div class="section-subheading">
+          <h3>Trip / receipt rows</h3>
+          <p>Each completed row becomes one receipt. Use "Quick fill" to copy the last row's truck &amp; route.</p>
+        </div>
+
+        <div class="trip-table-wrap">
+          <div class="trip-labels">
+            <span>Truck no.</span><span>From</span><span>To</span><span>Trips</span><span>Rate / trip</span><span>Trip date</span><span></span>
+          </div>
+          <div id="tripRows" class="trip-rows"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="secondary-button" id="addTripButton">+ Add row</button>
+          <button type="button" class="secondary-button accent" id="quickFillBtn">Quick fill last row ↓</button>
+          <button type="button" class="secondary-button" id="invoiceButton">Generate invoice</button>
+          <button type="button" id="receiptsButton">Generate receipts</button>
+        </div>
+      </div>
+
+      <section id="documentPreview" class="document-preview hidden" aria-live="polite"></section>
     </section>
 
-    <section id="invoicePreview" class="invoice hidden">
-      </section>
-  </div>
+    <!-- ===== SAVED RECEIPTS TAB ===== -->
+    <section class="tab-panel" id="panel-saved">
+      <div class="form-section">
+        <div class="section-heading">
+          <div>
+            <h2>Saved Receipts</h2>
+            <p>View, print, or delete stored receipts. Select by batch or individually.</p>
+          </div>
+          <button type="button" class="secondary-button" id="refreshReceiptsBtn">Refresh</button>
+        </div>
 
-  <script src="/static/script.js"></script>
+        <div class="filter-bar">
+          <div class="field-group">
+            <label for="filterClient">Filter by client</label>
+            <select id="filterClient"><option value="">All clients</option></select>
+          </div>
+        </div>
+
+        <!-- Inline edit form -->
+        <div id="editReceiptForm" class="edit-receipt-form hidden">
+          <input type="hidden" id="editReceiptId">
+          <div class="edit-grid">
+            <div class="field-group"><label>Truck no.</label><input id="editTruckNo"></div>
+            <div class="field-group"><label>From</label><input id="editFrom"></div>
+            <div class="field-group"><label>To</label><input id="editTo"></div>
+            <div class="field-group"><label>Trips</label><input type="number" id="editTrips" min="1"></div>
+            <div class="field-group"><label>Rate/trip</label><input type="number" id="editRate" min="0" step="0.01"></div>
+            <div class="field-group"><label>Trip date</label><input type="date" id="editTripDate"></div>
+            <div class="field-group"><label>Invoice date</label><input type="date" id="editInvoiceDate"></div>
+          </div>
+          <div class="edit-actions">
+            <button type="button" id="saveEditBtn">Save</button>
+            <button type="button" class="secondary-button" id="cancelEditBtn">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Batch cards -->
+        <div id="batchList" class="batch-list"></div>
+
+        <!-- Individual receipts table -->
+        <div id="receiptTableWrap" class="receipt-table-wrap hidden">
+          <table class="data-table" id="receiptTable">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>Receipt #</th>
+                <th>Client</th>
+                <th>Truck</th>
+                <th>Route</th>
+                <th>Trips</th>
+                <th>Total</th>
+                <th>Invoice date</th>
+                <th>Trip date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="receiptBody"></tbody>
+          </table>
+          <div class="batch-actions">
+            <button type="button" id="printSelectedBtn" disabled>Print selected</button>
+            <button type="button" class="danger-btn" id="deleteSelectedBtn" disabled>Delete selected</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CLIENTS TAB ===== -->
+    <section class="tab-panel" id="panel-clients">
+      <div class="form-section">
+        <div class="section-heading">
+          <div>
+            <h2>Manage Clients</h2>
+            <p>Add, edit, or remove clients. Saved clients auto-fill when creating receipts.</p>
+          </div>
+          <button type="button" id="addClientBtn">+ Add client</button>
+        </div>
+
+        <!-- Inline add/edit form -->
+        <div id="clientForm" class="client-form hidden">
+          <input type="hidden" id="editClientId">
+          <div class="client-grid">
+            <div class="field-group">
+              <label for="formClientName">Name</label>
+              <input id="formClientName" placeholder="Client name">
+            </div>
+            <div class="field-group">
+              <label for="formClientAddress">Address</label>
+              <input id="formClientAddress" placeholder="Address">
+            </div>
+          </div>
+          <div class="client-grid">
+            <div class="field-group">
+              <label for="formClientPhone">Phone</label>
+              <input id="formClientPhone" placeholder="Phone number">
+            </div>
+            <div class="field-group form-actions-inline">
+              <button type="button" id="saveClientBtn">Save</button>
+              <button type="button" class="secondary-button" id="cancelClientBtn">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <table class="data-table" id="clientTable">
+          <thead>
+            <tr><th>Name</th><th>Address</th><th>Phone</th><th></th></tr>
+          </thead>
+          <tbody id="clientBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+<script src="/static/script.js"></script>
 </body>
 </html>

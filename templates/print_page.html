@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Print Receipts</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <script>
+    window.onload = function() { window.print(); };
+  </script>
+</head>
+<body>
+  <div id="printContent" class="print-content"></div>
+  <script>
+    fetch("/api/receipts/batch/{{ batch_id }}/print")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("printContent").innerHTML = html;
+      });
+  </script>
+</body>
+</html>

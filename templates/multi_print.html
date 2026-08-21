@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Print Selected Receipts</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <script>window.onload = function() { window.print(); };</script>
+</head>
+<body>
+  <div id="printContent" class="print-content"></div>
+  <script>
+    const ids = JSON.parse(localStorage.getItem("printReceiptIds") || "[]");
+    if (!ids.length) { document.body.innerHTML = "<p>No receipts selected.</p>"; }
+    else {
+      fetch("/api/receipts/multi_print", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({receipt_ids: ids})
+      }).then(r => r.json()).then(data => {
+        if (data.html) document.getElementById("printContent").innerHTML = data.html;
+        else document.body.innerHTML = "<p>Failed to load receipts.</p>";
+      });
+    }
+  </script>
+</body>
+</html>
