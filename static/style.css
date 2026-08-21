@@ -84,17 +84,21 @@ button:disabled{opacity:.5;cursor:default}
 .grand-total-badge{display:flex;justify-content:space-between;align-items:center;background:#f2f4f7;color:#101828;padding:10px 16px;border-radius:4px;font-size:14px;font-weight:700;margin:14px 0 6px;border:1px solid #eaecf0}
 
 /* Single receipt footer + signature */
-.single-footer{margin-top:40px;padding-top:16px;border-top:1px solid #eaecf0;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px}
-.thankyou{color:#475467;font-size:13px}
+.single-footer{margin-top:40px;padding-top:16px;border-top:1px solid #eaecf0;display:flex;justify-content:flex-end}
 .sign-section{flex-shrink:0}
-.sign-block{display:flex;align-items:flex-end;gap:24px}
+.sign-block{display:flex;align-items:flex-end;gap:16px}
 .sign-area{text-align:center}
 .sign-line{width:180px;border-bottom:1px solid #d0d5dd;margin-bottom:6px}
 .sign-name{font-weight:700;font-size:14px;color:#182230}
 .sign-title{font-size:12px;color:#667085;margin-top:2px}
-.sign-stamp{flex-shrink:0}
-.stamp-border{width:70px;height:70px;border:2.5px solid #b42318;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);opacity:.55}
-.stamp-text{font-size:8px;font-weight:700;color:#b42318;text-align:center;line-height:1.2;letter-spacing:.5px}
+.sign-stamp{flex-shrink:0;position:relative}
+.stamp-border{width:80px;height:80px;border:2.5px solid #b42318;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-12deg);opacity:.5;position:relative;overflow:hidden}
+.stamp-border::before{content:'';position:absolute;inset:-2px;border:2px dashed #b42318;border-radius:50%;opacity:.4}
+.stamp-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.stamp-top{font-size:7px;font-weight:700;color:#b42318;letter-spacing:1px;text-transform:uppercase}
+.stamp-mid{font-size:6.5px;font-weight:700;color:#b42318;letter-spacing:.5px}
+.stamp-bottom{font-size:7px;font-weight:700;color:#b42318;letter-spacing:1.5px}
+.thankyou-bottom{text-align:center;color:#9ca3af;font-size:12px;margin-top:32px;padding-top:16px;border-top:1px solid #f1f5f9}
 
 /* Batch cards */
 .batch-list{display:grid;gap:12px;margin-top:18px}
