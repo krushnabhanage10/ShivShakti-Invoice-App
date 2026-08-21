@@ -1,0 +1,76 @@
+<div class="preview-actions no-print">
+  <span>{{ trips|length }} trip{{ '' if trips|length == 1 else 's' }} — single receipt</span>
+  <button type="button" onclick="window.print()">Print / Save PDF</button>
+</div>
+<div class="receipt-batch">
+  <article class="receipt-document">
+    <div class="document-header">
+      <img src="/static/logo.png" alt="">
+      <div>
+        <h2>Shivshakti Transport</h2>
+        <p>Moshi, Pune · Proprietor: Bharat Bhange · 8446604658</p>
+      </div>
+      <div class="document-meta">
+        <strong>RECEIPT</strong><br>
+        {{ document_number }}<br>
+        {{ receipt_date }}
+      </div>
+    </div>
+    <div class="grand-total-badge">
+      <span>Grand Total</span>
+      <span>₹{{ '%.2f'|format(grand_total) }}</span>
+    </div>
+    <div class="bill-to">
+      <strong>Received from / Bill to</strong><br>
+      {{ client_name }}<br>
+      <span>{{ client_address }}</span>
+    </div>
+    <table class="document-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Truck no.</th>
+          <th>Route</th>
+          <th>Trips</th>
+          <th>Rate</th>
+          <th>Amount</th>
+          <th>Trip date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trip in trips %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ trip.truck_no }}</td>
+          <td>{{ trip.from_loc }} → {{ trip.to_loc }}</td>
+          <td>{{ trip.num_trips }}</td>
+          <td>₹{{ '%.2f'|format(trip.rate_per_trip) }}</td>
+          <td>₹{{ '%.2f'|format(trip.total) }}</td>
+          <td>{{ trip.trip_date if trip.trip_date is defined else receipt_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="single-receipt-total">
+      <strong>Grand Total</strong>
+      <strong>₹{{ '%.2f'|format(grand_total) }}</strong>
+    </div>
+    <div class="single-footer">
+      <div class="thankyou">Thank you for your business.</div>
+      <div class="sign-section">
+        <div class="sign-block">
+          <div class="sign-stamp">
+            <div class="stamp-border">
+              <span class="stamp-text">SHIVSHAKTI<br>TRANSPORT</span>
+            </div>
+          </div>
+          <div class="sign-area">
+            <div class="sign-line"></div>
+            <div class="sign-name">Bharat Bhange</div>
+            <div class="sign-title">Proprietor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>

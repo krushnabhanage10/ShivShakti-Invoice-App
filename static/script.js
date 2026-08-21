@@ -391,12 +391,16 @@ async function deleteBatch(batchId) {
 }
 
 function printBatch(batchId) {
+  const mode = $("#printModeToggle").checked ? "single" : "multi";
+  localStorage.setItem("printMode", mode);
   window.open(`/print_batch_page/${batchId}`, "_blank");
 }
 
 $("#printSelectedBtn").addEventListener("click", () => {
   if (!selectedIds.size) return;
+  const mode = $("#printModeToggle").checked ? "single" : "multi";
   localStorage.setItem("printReceiptIds", JSON.stringify([...selectedIds]));
+  localStorage.setItem("printMode", mode);
   window.open("/print_batch_page/multi", "_blank");
 });
 

@@ -323,7 +323,7 @@ def print_batch(batch_id):
     receipts = Receipt.query.filter_by(batch_id=batch_id).order_by(Receipt.id).all()
     if not receipts:
         return "No receipts found for this batch.", 404
-    # Group receipts by client for invoice mode, or render individually
+    mode = request.args.get("mode", "multi")  # "single" or "multi"
     client = receipts[0].client
     trips = [dict(truck_no=r.truck_no, from_loc=r.from_loc, to_loc=r.to_loc,
                   num_trips=r.num_trips, rate_per_trip=r.rate_per_trip, total=r.total,
@@ -341,6 +341,16 @@ def print_batch(batch_id):
             trips=trips,
             grand_total=grand_total,
         )
+    elif mode == "single":
+        html = render_template(
+            "receipt_single_fragment.html",
+            document_number=f"RCP-{batch_id}",
+            receipt_date=receipts[0].invoice_date.isoformat(),
+            client_name=client.name,
+            client_address=client.address,
+            trips=trips,
+            grand_total=grand_total,
+        )
     else:
         html = render_template(
             "receipts_fragment.html",
@@ -349,6 +359,7 @@ def print_batch(batch_id):
             client_name=client.name,
             client_address=client.address,
             trips=trips,
+            grand_total=grand_total,
         )
     return html
 
@@ -370,22 +381,39 @@ def multi_print():
     """Accept list of receipt IDs, render all as a single print page."""
     data = request.get_json(silent=True) or {}
     ids = data.get("receipt_ids", [])
+    mode = data.get("mode", "multi")  # "single" or "multi"
     if not ids:
         return jsonify(success=False, errors=["Select at least one receipt."]), 400
     receipts = Receipt.query.filter(Receipt.id.in_(ids)).order_by(Receipt.id).all()
-    html = render_template(
-        "receipts_fragment.html",
-        batch_id="MULTI",
-        receipt_date=date.today().isoformat(),
-        client_name="",
-        client_address="",
-        trips=[dict(truck_no=r.truck_no, from_loc=r.from_loc, to_loc=r.to_loc,
-                    num_trips=r.num_trips, rate_per_trip=r.rate_per_trip, total=r.total,
-                    trip_date=r.trip_date.isoformat(),
-                    client_name=r.client.name if r.client else "",
-                    client_address=r.client.address if r.client else "")
-               for r in receipts],
-    )
+    trips = [dict(truck_no=r.truck_no, from_loc=r.from_loc, to_loc=r.to_loc,
+                  num_trips=r.num_trips, rate_per_trip=r.rate_per_trip, total=r.total,
+                  trip_date=r.trip_date.isoformat(),
+                  client_name=r.client.name if r.client else "",
+                  client_address=r.client.address if r.client else "")
+             for r in receipts]
+    grand_total = sum(t["total"] for t in trips)
+    # Use the first receipt's client info for the single-receipt header
+    first_client = receipts[0].client if receipts else None
+    if mode == "single":
+        html = render_template(
+            "receipt_single_fragment.html",
+            document_number="RCP-MULTI",
+            receipt_date=date.today().isoformat(),
+            client_name=first_client.name if first_client else "",
+            client_address=first_client.address if first_client else "",
+            trips=trips,
+            grand_total=grand_total,
+        )
+    else:
+        html = render_template(
+            "receipts_fragment.html",
+            batch_id="MULTI",
+            receipt_date=date.today().isoformat(),
+            client_name="",
+            client_address="",
+            trips=trips,
+            grand_total=grand_total,
+        )
     return jsonify(success=True, html=html)
 
 

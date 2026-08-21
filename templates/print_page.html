@@ -12,7 +12,8 @@
 <body>
   <div id="printContent" class="print-content"></div>
   <script>
-    fetch("/api/receipts/batch/{{ batch_id }}/print")
+    const printMode = localStorage.getItem("printMode") || "multi";
+    fetch("/api/receipts/batch/{{ batch_id }}/print?mode=" + printMode)
       .then(r => r.text())
       .then(html => {
         document.getElementById("printContent").innerHTML = html;

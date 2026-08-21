@@ -11,12 +11,13 @@
   <div id="printContent" class="print-content"></div>
   <script>
     const ids = JSON.parse(localStorage.getItem("printReceiptIds") || "[]");
+    const printMode = localStorage.getItem("printMode") || "multi";
     if (!ids.length) { document.body.innerHTML = "<p>No receipts selected.</p>"; }
     else {
       fetch("/api/receipts/multi_print", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({receipt_ids: ids})
+        body: JSON.stringify({receipt_ids: ids, mode: printMode})
       }).then(r => r.json()).then(data => {
         if (data.html) document.getElementById("printContent").innerHTML = data.html;
         else document.body.innerHTML = "<p>Failed to load receipts.</p>";
