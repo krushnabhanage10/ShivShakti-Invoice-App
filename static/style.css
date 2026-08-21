@@ -60,40 +60,36 @@ button:disabled{opacity:.5;cursor:default}
 /* Document preview */
 .document-preview{margin-top:24px}
 .preview-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;color:#475467;font-weight:700}
-.invoice-document,.receipt-document{background:#fff;border:1px solid #e2e8f0;padding:32px 36px;max-width:900px;margin:auto;border-radius:4px;box-shadow:0 1px 3px rgb(15 23 42 / 6%),0 4px 16px rgb(15 23 42 / 4%)}
-.document-header{display:grid;grid-template-columns:70px 1fr auto;gap:18px;align-items:center;border-bottom:2.5px solid #0b67c2;padding-bottom:18px;margin-bottom:4px;background:linear-gradient(180deg,#f8fafc 0%,#fff 100%);margin:-32px -36px 0;padding:24px 36px 18px;border-radius:4px 4px 0 0}
+.invoice-document,.receipt-document{background:#fff;border:1px solid #e2e8f0;padding:32px 36px;max-width:900px;margin:auto;border-radius:2px}
+.document-header{display:grid;grid-template-columns:70px 1fr auto;gap:18px;align-items:center;border-bottom:1.5px solid #d0d5dd;padding-bottom:16px;margin-bottom:6px}
 .document-header img{max-width:60px;max-height:60px;border-radius:6px;object-fit:contain}
-.document-header h2{font-size:22px;letter-spacing:-.01em;color:#0f172a}
-.document-header p{margin:3px 0 0;color:#64748b;font-size:13px}
-.document-meta{text-align:right;color:#475467;font-size:13px;line-height:1.6;padding:4px 0}
-.document-meta strong{color:#0b67c2;letter-spacing:.08em;font-size:14px;text-transform:uppercase}
-.bill-to{margin:20px 0;line-height:1.6;background:#f8fafc;border:1px solid #e2e8f0;border-left:3.5px solid #0b67c2;border-radius:0 8px 8px 0;padding:14px 18px}
-.bill-to span{white-space:pre-line;color:#64748b;font-size:13.5px}
-.bill-to strong{color:#1e293b;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
-.document-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:16px;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}
-.document-table th,.document-table td{padding:11px 14px;text-align:left;border-bottom:1px solid #e8edf2}
-.document-table td{border-bottom:1px solid #f1f5f9}
-.document-table th{background:#0b67c2;color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:12px 14px;border:none}
-.document-table thead tr{box-shadow:0 2px 4px rgb(11 103 194 / 15%)}
+.document-header h2{font-size:20px;color:#101828}
+.document-header p{margin:2px 0 0;color:#667085;font-size:12.5px}
+.document-meta{text-align:right;color:#344054;font-size:13px;line-height:1.6}
+.document-meta strong{color:#344054;letter-spacing:.06em;font-size:13px;text-transform:uppercase}
+.bill-to{margin:20px 0;line-height:1.6;background:#f9fafb;border:1px solid #eaecf0;border-left:2px solid #d0d5dd;border-radius:0 4px 4px 0;padding:12px 16px}
+.bill-to span{white-space:pre-line;color:#667085;font-size:13px}
+.bill-to strong{color:#344054;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.document-table{width:100%;border-collapse:collapse;margin-top:16px}
+.document-table th,.document-table td{padding:10px 14px;text-align:left;border:1px solid #eaecf0}
+.document-table th{background:#f2f4f7;color:#344054;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:10px 14px;border:1px solid #eaecf0}
 .document-table td:nth-last-child(-n+2),.document-table th:nth-last-child(-n+2),.document-table tfoot td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-.document-table tbody tr:nth-child(even){background:#f8fafc}
-.document-table tbody tr{transition:background .12s}
-.document-table tbody tr:hover{background:#eef4fb}
-.document-table tfoot{font-weight:700;background:#f1f5f9;border-top:2px solid #e2e8f0}
-.thankyou{text-align:center;color:#64748b;margin:25px 0 0;font-size:13px;letter-spacing:.01em}
-.invoice-grand-total{display:flex;justify-content:space-between;padding:14px 18px;font-weight:700;font-size:17px;border-top:2.5px solid #0b67c2;margin-top:16px;background:#f0f7ff;border-radius:0 0 8px 8px}
+.document-table tbody tr:nth-child(even){background:#f9fafb}
+.document-table tfoot{font-weight:700;background:#f9fafb}
+.thankyou{text-align:center;color:#667085;margin:25px 0 0;font-size:13px}
+.invoice-grand-total{display:flex;justify-content:space-between;padding:12px 14px;font-weight:700;font-size:15px;border-top:1.5px solid #d0d5dd;margin-top:14px}
 .receipt-batch{display:grid;gap:32px}
-.receipt-footer{margin-top:32px;padding-top:16px;border-top:1px dashed #d0d9e6;display:flex;justify-content:space-between;color:#64748b;font-size:13px}
-.single-receipt-total{display:flex;justify-content:space-between;padding:14px 18px;font-weight:700;font-size:17px;border-top:2.5px solid #0b67c2;margin-top:16px;background:#f0f7ff;border-radius:0 0 8px 8px}
-.grand-total-badge{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#0b67c2 0%,#0756a7 100%);color:#fff;padding:12px 20px;border-radius:8px;font-size:16px;font-weight:700;margin:16px 0 6px;box-shadow:0 2px 8px rgb(11 103 194 / 25%)}
+.receipt-footer{margin-top:28px;padding-top:14px;border-top:1px solid #eaecf0;display:flex;justify-content:space-between;color:#667085;font-size:13px}
+.single-receipt-total{display:flex;justify-content:space-between;padding:12px 14px;font-weight:700;font-size:15px;border-top:1.5px solid #d0d5dd;margin-top:14px}
+.grand-total-badge{display:flex;justify-content:space-between;align-items:center;background:#f2f4f7;color:#101828;padding:10px 16px;border-radius:4px;font-size:14px;font-weight:700;margin:14px 0 6px;border:1px solid #eaecf0}
 
 /* Single receipt footer + signature */
-.single-footer{margin-top:48px;padding-top:20px;border-top:1px dashed #d0d9e6;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:30px}
+.single-footer{margin-top:40px;padding-top:16px;border-top:1px solid #eaecf0;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px}
 .thankyou{color:#475467;font-size:13px}
 .sign-section{flex-shrink:0}
 .sign-block{display:flex;align-items:flex-end;gap:24px}
 .sign-area{text-align:center}
-.sign-line{width:180px;border-bottom:1.5px solid #94a3b8;margin-bottom:6px}
+.sign-line{width:180px;border-bottom:1px solid #d0d5dd;margin-bottom:6px}
 .sign-name{font-weight:700;font-size:14px;color:#182230}
 .sign-title{font-size:12px;color:#667085;margin-top:2px}
 .sign-stamp{flex-shrink:0}
@@ -159,8 +155,7 @@ button:disabled{opacity:.5;cursor:default}
   .no-print,.app-header,.form-section,.tabs,.tab-panel:not(.active){display:none!important}
   .tab-panel{display:block!important}
   .document-preview{border:0;box-shadow:none;padding:0;margin:0}
-  .invoice-document,.receipt-document{border:0;padding:0;max-width:none;box-shadow:none;border-radius:0}
-  .document-header{margin:-12mm -12mm 0;padding:20mm 12mm 14mm;border-radius:0}
+  .invoice-document,.receipt-document{border:0;padding:0;max-width:none}
   .receipt-document{break-after:page;page-break-after:always}
   .receipt-document:last-child{break-after:auto;page-break-after:auto}
   .single-receipt-total,.single-footer,.grand-total-badge{page-break-inside:avoid;break-inside:avoid}
