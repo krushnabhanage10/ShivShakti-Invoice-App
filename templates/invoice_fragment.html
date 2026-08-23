@@ -4,7 +4,7 @@
 </div>
 
 <article class="invoice-v2">
-  <!-- Top bar: Invoice No (left) + Date (right) -->
+  <!-- Top bar: Invoice No + Date on one line -->
   <div class="inv-top-bar">
     <span class="inv-number">Invoice No: {{ document_number }}</span>
     <span class="inv-date">Date: {{ document_date }}</span>
@@ -18,8 +18,11 @@
     <p class="inv-address">chikhli, 412105</p>
   </div>
 
-  <!-- INVOICE title -->
-  <h2 class="inv-title">INVOICE</h2>
+  <!-- Invoice title + number on one line -->
+  <div class="inv-title-bar">
+    <span class="inv-title">INVOICE</span>
+    <span class="inv-title-num">No: {{ document_number }}</span>
+  </div>
 
   <!-- Bill To -->
   <div class="inv-bill-to">
