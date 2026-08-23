@@ -259,7 +259,7 @@ def generate_receipts():
     saved = []
     for i, t in enumerate(trips, 1):
         r = Receipt(
-            receipt_number=f"{custom_receipt_number}-{i:03d}" if custom_receipt_number else f"RCP-{batch_id}-{i:03d}",
+            receipt_number=f"{custom_receipt_number}-{i:03d}" if custom_receipt_number else f"INV-{batch_id}-{i:03d}",
             batch_id=batch_id,
             client_id=client.id,
             truck_no=t["truck_no"],
@@ -400,7 +400,7 @@ def print_batch(batch_id):
     elif mode == "compact":
         html = render_template(
             "receipt_compact_fragment.html",
-            document_number=receipt_number_override or f"RCP-{batch_id}",
+            document_number=receipt_number_override or f"INV-{batch_id}",
             receipt_date=receipts[0].invoice_date.isoformat(),
             client_name=client.name,
             client_address=client.address,
@@ -411,7 +411,7 @@ def print_batch(batch_id):
     elif mode == "single":
         html = render_template(
             "receipt_single_fragment.html",
-            document_number=receipt_number_override or f"RCP-{batch_id}",
+            document_number=receipt_number_override or f"INV-{batch_id}",
             receipt_date=receipts[0].invoice_date.isoformat(),
             client_name=client.name,
             client_address=client.address,
@@ -467,7 +467,7 @@ def multi_print():
     if mode == "compact":
         html = render_template(
             "receipt_compact_fragment.html",
-            document_number=receipt_number_override or "RCP-MULTI",
+            document_number=receipt_number_override or "INV-MULTI",
             receipt_date=date.today().isoformat(),
             client_name=first_client.name if first_client else "",
             client_address=first_client.address if first_client else "",
@@ -478,7 +478,7 @@ def multi_print():
     elif mode == "single":
         html = render_template(
             "receipt_single_fragment.html",
-            document_number=receipt_number_override or "RCP-MULTI",
+            document_number=receipt_number_override or "INV-MULTI",
             receipt_date=date.today().isoformat(),
             client_name=first_client.name if first_client else "",
             client_address=first_client.address if first_client else "",
@@ -529,7 +529,7 @@ def seed_demo():
     today = date.today()
     for i, (cid, truck, fr, to, trips, rate) in enumerate(sample, 1):
         r = Receipt(
-            receipt_number=f"RCP-{batch_id}-{i:03d}",
+            receipt_number=f"INV-{batch_id}-{i:03d}",
             batch_id=batch_id,
             client_id=cid,
             truck_no=truck,
