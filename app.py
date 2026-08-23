@@ -315,7 +315,7 @@ def list_batches():
         db.func.min(Receipt.invoice_date),
         db.func.count(Receipt.id),
         db.func.sum(Receipt.total),
-        Receipt.client_id,
+        db.func.min(Receipt.client_id),
     ).group_by(Receipt.batch_id).order_by(db.func.min(Receipt.invoice_date).desc()).all()
     batches = []
     for batch_id, rdate, count, total, cid in rows:

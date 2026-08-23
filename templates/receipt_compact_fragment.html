@@ -11,9 +11,8 @@
         <p>Moshi, Pune · Proprietor: Bharat Bhange · 8446604658</p>
       </div>
       <div class="document-meta">
-        <strong>RECEIPT</strong><br>
-        {{ document_number }}<br>
-        {{ receipt_date }}
+        <div><strong>RECEIPT</strong> <span class="doc-meta-number">No: {{ document_number }}</span></div>
+        <div class="doc-meta-date">Date: {{ receipt_date }}</div>
       </div>
     </div>
     <div class="bill-to compact-bill-to">

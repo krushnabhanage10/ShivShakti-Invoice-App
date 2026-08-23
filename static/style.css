@@ -65,8 +65,9 @@ button:disabled{opacity:.5;cursor:default}
 .document-header img{max-width:72px;max-height:72px;border-radius:8px;object-fit:contain}
 .document-header h2{font-family:Poppins,sans-serif;font-size:24px;font-weight:700;color:#3d2e0a;letter-spacing:1px}
 .document-header p{margin:3px 0 0;color:#7c6a3a;font-size:13px}
-.document-meta{text-align:right;color:#344054;font-size:13px;line-height:1.6}
-.document-meta strong{color:#3d2e0a;letter-spacing:.06em;font-size:13px;text-transform:uppercase}
+.document-meta{text-align:right;color:#3d2e0a;line-height:1.6}
+.document-meta strong{font-size:14px;font-weight:700;color:#3d2e0a;letter-spacing:.06em;font-family:Poppins,sans-serif;text-transform:uppercase}
+.doc-meta-number,.doc-meta-date{font-size:14px;font-weight:700;color:#3d2e0a;letter-spacing:.03em}
 .bill-to{margin:20px 0;line-height:1.6;background:#fef9ee;border:1px solid #e8d5a8;border-left:3px solid #d4a843;border-radius:0 6px 6px 0;padding:14px 18px}
 .bill-to span{white-space:pre-line;color:#667085;font-size:13px}
 .bill-to strong{color:#7c6a3a;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
@@ -131,6 +132,12 @@ button:disabled{opacity:.5;cursor:default}
 .inv-sign-name{font-weight:700;font-size:14px;color:#182230}
 .inv-sign-title{font-size:12px;color:#667085;margin-top:2px}
 .receipt-batch{display:grid;gap:32px}
+
+/* Receipt top bar */
+.rcpt-top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:10px 16px;background:linear-gradient(135deg,#fff9ee,#fef3dc);border:1px solid #d4a843;border-radius:6px}
+.rcpt-top-label{font-family:Poppins,sans-serif;font-weight:700;font-size:15px;color:#3d2e0a;letter-spacing:2px;text-transform:uppercase}
+.rcpt-top-number{font-weight:700;font-size:15px;color:#3d2e0a;letter-spacing:.03em}
+.rcpt-top-date{font-weight:600;font-size:14px;color:#7c6a3a}
 .receipt-footer{margin-top:28px;padding-top:14px;border-top:1px solid #eaecf0;display:flex;justify-content:space-between;color:#667085;font-size:13px}
 .single-receipt-total{display:flex;justify-content:space-between;padding:12px 14px;font-weight:700;font-size:15px;border-top:2px solid #d4a843;margin-top:14px;background:linear-gradient(135deg,#f5e6c8,#f0d49a);border-radius:0 0 4px 4px;color:#3d2e0a}
 .grand-total-badge{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#f5e6c8,#f0d49a);color:#3d2e0a;padding:12px 18px;border-radius:6px;font-size:15px;font-weight:700;margin:14px 0 8px;border:1px solid #d4a843}
