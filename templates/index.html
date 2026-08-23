@@ -160,13 +160,13 @@
               <label for="printReceiptOverride">Receipt # (optional override)</label>
               <input id="printReceiptOverride" placeholder="e.g. RCP-12345">
             </div>
-            <div class="print-mode-toggle">
-              <label class="toggle-label" for="printModeToggle">Single receipt</label>
-              <label class="toggle-switch">
-                <input type="checkbox" id="printModeToggle">
-                <span class="toggle-slider"></span>
-              </label>
-              <label class="toggle-label" for="printModeToggle">Separate pages</label>
+            <div class="print-mode-select">
+              <label for="printModeSelect">Print mode</label>
+              <select id="printModeSelect">
+                <option value="multi">Separate pages</option>
+                <option value="single">Single receipt</option>
+                <option value="compact">All on one page</option>
+              </select>
             </div>
             <button type="button" id="printSelectedBtn" disabled>Print selected</button>
             <button type="button" class="danger-btn" id="deleteSelectedBtn" disabled>Delete selected</button>

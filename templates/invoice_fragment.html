@@ -1,1 +1,90 @@
-<div class="preview-actions no-print"><span>One combined invoice</span><button type="button" onclick="window.print()">Print / Save PDF</button></div><article class="invoice-document"><div class="document-header"><img src="/static/logo.png" alt=""><div><h2>Shivshakti Transport</h2><p>Moshi, Pune · Proprietor: Bharat Bhange · 8446604658</p></div><div class="document-meta"><strong>INVOICE</strong><br>{{ document_number }}<br>{{ document_date }}</div></div><div class="bill-to"><strong>Invoice to</strong><br>{{ client_name }}<br><span>{{ client_address }}</span></div><table class="document-table"><thead><tr><th>Truck no.</th><th>From</th><th>To</th><th>Trips</th><th>Rate</th><th>Trip date</th><th>Total</th></tr></thead><tbody>{% for trip in trips %}<tr><td>{{ trip.truck_no }}</td><td>{{ trip.from_loc }}</td><td>{{ trip.to_loc }}</td><td>{{ trip.num_trips }}</td><td>₹{{ '%.2f'|format(trip.rate_per_trip) }}</td><td>{{ trip.trip_date if trip.trip_date is defined else document_date }}</td><td>₹{{ '%.2f'|format(trip.total) }}</td></tr>{% endfor %}</tbody></table><div class="invoice-grand-total"><span>Grand total</span><span>₹{{ '%.2f'|format(grand_total) }}</span></div><p class="thankyou">Thank you for your business.</p></article>
+<div class="preview-actions no-print">
+  <span>One combined invoice</span>
+  <button type="button" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<article class="invoice-v2">
+  <!-- Top bar: Invoice No (left) + Date (right) -->
+  <div class="inv-top-bar">
+    <span class="inv-number">Invoice No: {{ document_number }}</span>
+    <span class="inv-date">Date: {{ document_date }}</span>
+  </div>
+
+  <!-- Header box (golden) with logo -->
+  <div class="inv-header-box">
+    <img src="/static/logo.png" alt="Logo" class="inv-logo">
+    <p class="inv-phone">Phone: +91 8446604658</p>
+    <h1 class="inv-company">SHIV SHAKTI TRANSPORT</h1>
+    <p class="inv-address">chikhli, 412105</p>
+  </div>
+
+  <!-- INVOICE title -->
+  <h2 class="inv-title">INVOICE</h2>
+
+  <!-- Bill To -->
+  <div class="inv-bill-to">
+    <strong>Bill To:</strong><br>
+    {{ client_name }}<br>
+    <span>Address: {{ client_address }}</span>
+  </div>
+
+  <!-- Table -->
+  <table class="inv-table">
+    <thead>
+      <tr>
+        <th class="inv-th-sno">Sl.No.</th>
+        <th class="inv-th-desc">Description</th>
+        <th class="inv-th-qty">Trips</th>
+        <th class="inv-th-rate">Rate</th>
+        <th class="inv-th-amount">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trip in trips %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td class="inv-desc-cell">
+          {{ trip.from_loc }} to {{ trip.to_loc }}<br>
+          <small>{{ trip.truck_no }} · {{ trip.trip_date if trip.trip_date is defined else document_date }}</small>
+        </td>
+        <td>{{ trip.num_trips if trip.num_trips is defined else 1 }}</td>
+        <td class="inv-num">₹{{ '%.2f'|format(trip.rate_per_trip) }}</td>
+        <td class="inv-num">₹{{ '%.2f'|format(trip.total) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Bottom section: Amount in words + Summary box -->
+  <div class="inv-bottom">
+    <div class="inv-words">
+      <strong>Amount in Words:</strong><br>
+      <span class="inv-words-text">{{ amount_in_words }}</span>
+    </div>
+    <div class="inv-summary-box">
+      <div class="inv-summary-row inv-summary-total">
+        <span>Total</span>
+        <span>₹{{ '%.2f'|format(grand_total) }}</span>
+      </div>
+      <div class="inv-summary-row">
+        <span>Paid Amount:</span>
+        <span>0.00</span>
+      </div>
+      <div class="inv-summary-row">
+        <span>Due Amount:</span>
+        <span>₹{{ '%.2f'|format(grand_total) }}</span>
+      </div>
+      <div class="inv-summary-row">
+        <span>Payment Mode:</span>
+        <span>&nbsp;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signature -->
+  <div class="inv-signature">
+    <div class="inv-sign-line"></div>
+    <span class="inv-sign-name">Bharat Bhanage</span>
+    <span class="inv-sign-title">Authorised Signatory</span>
+  </div>
+</article>

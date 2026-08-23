@@ -1,10 +1,10 @@
 <div class="preview-actions no-print">
-  <span>{{ trips|length }} trip{{ '' if trips|length == 1 else 's' }} — single receipt</span>
+  <span>{{ trips|length }} trip{{ '' if trips|length == 1 else 's' }} — all on one page</span>
   <button type="button" onclick="window.print()">Print / Save PDF</button>
 </div>
 <div class="receipt-batch">
-  <article class="receipt-document">
-    <div class="document-header">
+  <article class="receipt-document compact-receipt">
+    <div class="document-header compact-header">
       <img src="/static/logo.png" alt="">
       <div>
         <h2>Shivshakti Transport</h2>
@@ -16,12 +16,12 @@
         {{ receipt_date }}
       </div>
     </div>
-    <div class="bill-to">
+    <div class="bill-to compact-bill-to">
       <strong>Received from / Bill to</strong><br>
       {{ client_name }}<br>
       <span>{{ client_address }}</span>
     </div>
-    <table class="document-table">
+    <table class="document-table compact-table">
       <thead>
         <tr>
           <th>#</th>
@@ -47,13 +47,9 @@
         {% endfor %}
       </tbody>
     </table>
-    <div class="single-receipt-total">
-      <strong>Grand Total</strong>
-      <strong>₹{{ '%.2f'|format(grand_total) }}</strong>
-    </div>
 
     <!-- Post-table section: Amount in Words + Summary -->
-    <div class="rcpt-bottom">
+    <div class="rcpt-bottom compact-bottom">
       <div class="rcpt-words">
         <strong>Amount in Words:</strong><br>
         <span class="rcpt-words-text">{{ amount_in_words }}</span>
@@ -78,26 +74,22 @@
       </div>
     </div>
 
-    <div class="single-footer">
-      <div class="sign-section">
-        <div class="sign-block">
-          <div class="sign-area">
-            <div class="sign-line"></div>
-            <div class="sign-name">Bharat Bhange</div>
-            <div class="sign-title">Proprietor</div>
-          </div>
-          <div class="sign-stamp">
-            <div class="stamp-border">
-              <div class="stamp-inner">
-                <span class="stamp-top">SHIVSHAKTI</span>
-                <span class="stamp-mid">✦ TRANSPORT ✦</span>
-                <span class="stamp-bottom">PUNE</span>
-              </div>
-            </div>
+    <div class="compact-footer">
+      <div class="compact-sign">
+        <div class="sign-line"></div>
+        <span class="sign-name">Bharat Bhange</span>
+        <span class="sign-title">Proprietor</span>
+      </div>
+      <div class="compact-stamp">
+        <div class="stamp-border compact-stamp-border">
+          <div class="stamp-inner">
+            <span class="stamp-top">SHIVSHAKTI</span>
+            <span class="stamp-mid">✦ TRANSPORT ✦</span>
+            <span class="stamp-bottom">PUNE</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="thankyou-bottom">Thank you for your business.</div>
+    <div class="thankyou-bottom compact-thanks">Thank you for your business.</div>
   </article>
 </div>

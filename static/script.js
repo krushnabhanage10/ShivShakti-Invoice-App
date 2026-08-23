@@ -392,7 +392,7 @@ async function deleteBatch(batchId) {
 }
 
 function printBatch(batchId) {
-  const mode = $("#printModeToggle").checked ? "single" : "multi";
+  const mode = $("#printModeSelect") ? $("#printModeSelect").value : "multi";
   const override = $("#printReceiptOverride") ? $("#printReceiptOverride").value.trim() : "";
   localStorage.setItem("printMode", mode);
   if (override) localStorage.setItem("printReceiptOverride", override);
@@ -402,7 +402,7 @@ function printBatch(batchId) {
 
 $("#printSelectedBtn").addEventListener("click", () => {
   if (!selectedIds.size) return;
-  const mode = $("#printModeToggle").checked ? "single" : "multi";
+  const mode = $("#printModeSelect") ? $("#printModeSelect").value : "multi";
   localStorage.setItem("printReceiptIds", JSON.stringify([...selectedIds]));
   localStorage.setItem("printMode", mode);
   const override = $("#printReceiptOverride") ? $("#printReceiptOverride").value.trim() : "";

@@ -16,6 +16,55 @@ def parse_date(value, fallback=None):
     except (TypeError, ValueError):
         return fallback
 
+
+def amount_in_words(amount):
+    """Convert a number to Indian-style words for invoice display."""
+    ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+            "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+            "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
+    tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy",
+            "Eighty", "Ninety"]
+
+    if amount == 0:
+        return "Zero Rupees Only"
+
+    def _chunk(n):
+        if n == 0:
+            return ""
+        elif n < 20:
+            return ones[n]
+        elif n < 100:
+            return (tens[n // 10] + " " + ones[n % 10]).strip()
+        else:
+            return (ones[n // 100] + " Hundred " + _chunk(n % 100)).strip()
+
+    int_part = int(amount)
+    dec_part = round((amount - int_part) * 100)
+
+    if int_part == 0:
+        result = "Zero"
+    else:
+        parts = []
+        if int_part >= 10000000:
+            parts.append(_chunk(int_part // 10000000) + " Crore")
+            int_part %= 10000000
+        if int_part >= 100000:
+            parts.append(_chunk(int_part // 100000) + " Lakh")
+            int_part %= 100000
+        if int_part >= 1000:
+            parts.append(_chunk(int_part // 1000) + " Thousand")
+            int_part %= 1000
+        if int_part > 0:
+            parts.append(_chunk(int_part))
+        result = " ".join(parts)
+
+    result += " Rupees"
+    if dec_part > 0:
+        result += " and " + _chunk(dec_part) + " Paise"
+    result += " Only"
+    return result
+
+
 app = Flask(__name__, static_folder="static", template_folder="templates")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///receipts.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -180,6 +229,7 @@ def generate_invoice():
         db.session.add(r)
         saved.append(r)
     db.session.commit()
+    grand_total = sum(t["total"] for t in trips)
     return jsonify(
         success=True,
         html=render_template(
@@ -189,7 +239,8 @@ def generate_invoice():
             client_name=client.name,
             client_address=client.address,
             trips=trips,
-            grand_total=sum(t["total"] for t in trips),
+            grand_total=grand_total,
+            amount_in_words=amount_in_words(grand_total),
         ),
         receipt_ids=[r.id for r in saved],
     )
@@ -232,6 +283,7 @@ def generate_receipts():
             client_name=client.name,
             client_address=client.address,
             trips=trips,
+            amount_in_words_per_trip=[amount_in_words(t["total"]) for t in trips],
         ),
         count=len(trips),
         receipt_ids=[r.id for r in saved],
@@ -325,7 +377,7 @@ def print_batch(batch_id):
     receipts = Receipt.query.filter_by(batch_id=batch_id).order_by(Receipt.id).all()
     if not receipts:
         return "No receipts found for this batch.", 404
-    mode = request.args.get("mode", "multi")  # "single" or "multi"
+    mode = request.args.get("mode", "multi")  # "single", "multi", or "compact"
     receipt_number_override = request.args.get("receipt_number", "").strip()
     client = receipts[0].client
     trips = [dict(truck_no=r.truck_no, from_loc=r.from_loc, to_loc=r.to_loc,
@@ -343,6 +395,18 @@ def print_batch(batch_id):
             client_address=client.address,
             trips=trips,
             grand_total=grand_total,
+            amount_in_words=amount_in_words(grand_total),
+        )
+    elif mode == "compact":
+        html = render_template(
+            "receipt_compact_fragment.html",
+            document_number=receipt_number_override or f"RCP-{batch_id}",
+            receipt_date=receipts[0].invoice_date.isoformat(),
+            client_name=client.name,
+            client_address=client.address,
+            trips=trips,
+            grand_total=grand_total,
+            amount_in_words=amount_in_words(grand_total),
         )
     elif mode == "single":
         html = render_template(
@@ -353,6 +417,7 @@ def print_batch(batch_id):
             client_address=client.address,
             trips=trips,
             grand_total=grand_total,
+            amount_in_words=amount_in_words(grand_total),
         )
     else:
         html = render_template(
@@ -363,6 +428,7 @@ def print_batch(batch_id):
             client_address=client.address,
             trips=trips,
             grand_total=grand_total,
+            amount_in_words_per_trip=[amount_in_words(r.total) for r in receipts],
         )
     return html
 
@@ -398,7 +464,18 @@ def multi_print():
     grand_total = sum(t["total"] for t in trips)
     # Use the first receipt's client info for the single-receipt header
     first_client = receipts[0].client if receipts else None
-    if mode == "single":
+    if mode == "compact":
+        html = render_template(
+            "receipt_compact_fragment.html",
+            document_number=receipt_number_override or "RCP-MULTI",
+            receipt_date=date.today().isoformat(),
+            client_name=first_client.name if first_client else "",
+            client_address=first_client.address if first_client else "",
+            trips=trips,
+            grand_total=grand_total,
+            amount_in_words=amount_in_words(grand_total),
+        )
+    elif mode == "single":
         html = render_template(
             "receipt_single_fragment.html",
             document_number=receipt_number_override or "RCP-MULTI",
@@ -407,6 +484,7 @@ def multi_print():
             client_address=first_client.address if first_client else "",
             trips=trips,
             grand_total=grand_total,
+            amount_in_words=amount_in_words(grand_total),
         )
     else:
         html = render_template(
@@ -417,6 +495,7 @@ def multi_print():
             client_address="",
             trips=trips,
             grand_total=grand_total,
+            amount_in_words_per_trip=[amount_in_words(t["total"]) for t in trips],
         )
     return jsonify(success=True, html=html)
 
