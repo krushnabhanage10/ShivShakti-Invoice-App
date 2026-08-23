@@ -68,7 +68,10 @@
             <label for="invoiceDate">Invoice date</label>
             <input type="date" id="invoiceDate">
           </div>
-          <div></div>
+          <div class="field-group">
+            <label for="customReceiptNumber">Receipt # <span style="color:#667085;font-weight:400">(optional)</span></label>
+            <input id="customReceiptNumber" placeholder="e.g. RCP-12345">
+          </div>
         </div>
 
         <div class="section-subheading">
@@ -153,6 +156,10 @@
             <tbody id="receiptBody"></tbody>
           </table>
           <div class="batch-actions">
+            <div class="receipt-override-field">
+              <label for="printReceiptOverride">Receipt # (optional override)</label>
+              <input id="printReceiptOverride" placeholder="e.g. RCP-12345">
+            </div>
             <div class="print-mode-toggle">
               <label class="toggle-label" for="printModeToggle">Single receipt</label>
               <label class="toggle-switch">

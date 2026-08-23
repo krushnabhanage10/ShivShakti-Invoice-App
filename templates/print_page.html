@@ -13,7 +13,10 @@
   <div id="printContent" class="print-content"></div>
   <script>
     const printMode = localStorage.getItem("printMode") || "multi";
-    fetch("/api/receipts/batch/{{ batch_id }}/print?mode=" + printMode)
+    const receiptOverride = localStorage.getItem("printReceiptOverride") || "";
+    let url = "/api/receipts/batch/{{ batch_id }}/print?mode=" + printMode;
+    if (receiptOverride) url += "&receipt_number=" + encodeURIComponent(receiptOverride);
+    fetch(url)
       .then(r => r.text())
       .then(html => {
         document.getElementById("printContent").innerHTML = html;

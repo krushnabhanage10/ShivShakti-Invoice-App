@@ -160,11 +160,12 @@ def generate_invoice():
     batch_id = uuid.uuid4().hex[:6].upper()
     client = _find_or_create_client(client_name, client_address)
     invoice_date = parse_date(raw.get("invoiceDate"))
+    custom_receipt_number = str(raw.get("receiptNumber", "")).strip()
     # Save each trip as a receipt
     saved = []
     for i, t in enumerate(trips, 1):
         r = Receipt(
-            receipt_number=f"INV-{batch_id}-{i:03d}",
+            receipt_number=f"{custom_receipt_number}-{i:03d}" if custom_receipt_number else f"INV-{batch_id}-{i:03d}",
             batch_id=batch_id,
             client_id=client.id,
             truck_no=t["truck_no"],
@@ -183,7 +184,7 @@ def generate_invoice():
         success=True,
         html=render_template(
             "invoice_fragment.html",
-            document_number=f"INV-{batch_id}",
+            document_number=custom_receipt_number or f"INV-{batch_id}",
             document_date=invoice_date.isoformat(),
             client_name=client.name,
             client_address=client.address,
@@ -203,10 +204,11 @@ def generate_receipts():
     batch_id = uuid.uuid4().hex[:6].upper()
     client = _find_or_create_client(client_name, client_address)
     invoice_date = parse_date(raw.get("invoiceDate"))
+    custom_receipt_number = str(raw.get("receiptNumber", "")).strip()
     saved = []
     for i, t in enumerate(trips, 1):
         r = Receipt(
-            receipt_number=f"RCP-{batch_id}-{i:03d}",
+            receipt_number=f"{custom_receipt_number}-{i:03d}" if custom_receipt_number else f"RCP-{batch_id}-{i:03d}",
             batch_id=batch_id,
             client_id=client.id,
             truck_no=t["truck_no"],
@@ -225,7 +227,7 @@ def generate_receipts():
         success=True,
         html=render_template(
             "receipts_fragment.html",
-            batch_id=batch_id,
+            batch_id=custom_receipt_number or batch_id,
             receipt_date=invoice_date.isoformat(),
             client_name=client.name,
             client_address=client.address,
@@ -324,6 +326,7 @@ def print_batch(batch_id):
     if not receipts:
         return "No receipts found for this batch.", 404
     mode = request.args.get("mode", "multi")  # "single" or "multi"
+    receipt_number_override = request.args.get("receipt_number", "").strip()
     client = receipts[0].client
     trips = [dict(truck_no=r.truck_no, from_loc=r.from_loc, to_loc=r.to_loc,
                   num_trips=r.num_trips, rate_per_trip=r.rate_per_trip, total=r.total,
@@ -334,7 +337,7 @@ def print_batch(batch_id):
     if is_invoice:
         html = render_template(
             "invoice_fragment.html",
-            document_number=f"INV-{batch_id}",
+            document_number=receipt_number_override or f"INV-{batch_id}",
             document_date=receipts[0].invoice_date.isoformat(),
             client_name=client.name,
             client_address=client.address,
@@ -344,7 +347,7 @@ def print_batch(batch_id):
     elif mode == "single":
         html = render_template(
             "receipt_single_fragment.html",
-            document_number=f"RCP-{batch_id}",
+            document_number=receipt_number_override or f"RCP-{batch_id}",
             receipt_date=receipts[0].invoice_date.isoformat(),
             client_name=client.name,
             client_address=client.address,
@@ -354,7 +357,7 @@ def print_batch(batch_id):
     else:
         html = render_template(
             "receipts_fragment.html",
-            batch_id=batch_id,
+            batch_id=receipt_number_override or batch_id,
             receipt_date=receipts[0].invoice_date.isoformat(),
             client_name=client.name,
             client_address=client.address,
@@ -382,6 +385,7 @@ def multi_print():
     data = request.get_json(silent=True) or {}
     ids = data.get("receipt_ids", [])
     mode = data.get("mode", "multi")  # "single" or "multi"
+    receipt_number_override = str(data.get("receipt_number", "")).strip()
     if not ids:
         return jsonify(success=False, errors=["Select at least one receipt."]), 400
     receipts = Receipt.query.filter(Receipt.id.in_(ids)).order_by(Receipt.id).all()
@@ -397,7 +401,7 @@ def multi_print():
     if mode == "single":
         html = render_template(
             "receipt_single_fragment.html",
-            document_number="RCP-MULTI",
+            document_number=receipt_number_override or "RCP-MULTI",
             receipt_date=date.today().isoformat(),
             client_name=first_client.name if first_client else "",
             client_address=first_client.address if first_client else "",
@@ -407,7 +411,7 @@ def multi_print():
     else:
         html = render_template(
             "receipts_fragment.html",
-            batch_id="MULTI",
+            batch_id=receipt_number_override or "MULTI",
             receipt_date=date.today().isoformat(),
             client_name="",
             client_address="",

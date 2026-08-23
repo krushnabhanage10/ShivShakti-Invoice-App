@@ -19,6 +19,7 @@ const quickFillBtn = $("#quickFillBtn");
 const invoiceButton = $("#invoiceButton");
 const receiptsButton = $("#receiptsButton");
 const invoiceDateInput = $("#invoiceDate");
+const customReceiptNumberInput = $("#customReceiptNumber");
 
 // Set invoice date default to today
 const todayStr = new Date().toISOString().slice(0, 10);
@@ -207,7 +208,7 @@ async function generate(endpoint, button) {
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ clientName: clientNameInput.value, clientAddress: clientAddressInput.value, invoiceDate: invoiceDateInput.value, trips: collectTrips() }),
+      body: JSON.stringify({ clientName: clientNameInput.value, clientAddress: clientAddressInput.value, invoiceDate: invoiceDateInput.value, receiptNumber: customReceiptNumberInput.value.trim(), trips: collectTrips() }),
     });
     const data = await res.json();
     if (!res.ok || !data.success) {
@@ -392,7 +393,10 @@ async function deleteBatch(batchId) {
 
 function printBatch(batchId) {
   const mode = $("#printModeToggle").checked ? "single" : "multi";
+  const override = $("#printReceiptOverride") ? $("#printReceiptOverride").value.trim() : "";
   localStorage.setItem("printMode", mode);
+  if (override) localStorage.setItem("printReceiptOverride", override);
+  else localStorage.removeItem("printReceiptOverride");
   window.open(`/print_batch_page/${batchId}`, "_blank");
 }
 
@@ -401,6 +405,9 @@ $("#printSelectedBtn").addEventListener("click", () => {
   const mode = $("#printModeToggle").checked ? "single" : "multi";
   localStorage.setItem("printReceiptIds", JSON.stringify([...selectedIds]));
   localStorage.setItem("printMode", mode);
+  const override = $("#printReceiptOverride") ? $("#printReceiptOverride").value.trim() : "";
+  if (override) localStorage.setItem("printReceiptOverride", override);
+  else localStorage.removeItem("printReceiptOverride");
   window.open("/print_batch_page/multi", "_blank");
 });
 
